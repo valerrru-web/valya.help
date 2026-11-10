@@ -101,6 +101,14 @@ input:focus-visible,textarea:focus-visible,button:focus-visible,summary:focus-vi
   .btn{flex:1 1 auto}
   .btn.ghost{flex:0 0 100%;margin-left:0}
 }
+@media (max-width:640px){
+  .wrap{padding-bottom:20px}
+  .actions{position:static;background:transparent;border-top:none;padding:0 18px calc(28px + env(safe-area-inset-bottom,0px))}
+  .actions .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .actions .btn{font-size:.86rem;padding:8px 10px;line-height:1.25}
+  .actions .btn.primary{grid-column:1 / -1}
+  .actions .btn.ghost{grid-column:1 / -1;margin-left:0;padding:6px;font-size:.84rem}
+}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 @media print{
   :root{padding:0}
