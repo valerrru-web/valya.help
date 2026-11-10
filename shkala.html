@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Моя шкала эмоций · Валентина Какулькина</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#EDF1F0; --surface:#FFFFFF; --ink:#1E292C; --muted:#5B686B; --line:#CCD6D4;
+  --accent:#2E6B70; --accent-ink:#FFFFFF; --warn:#8A4B12; --warn-bg:#FBEFDF;
+  --l1:#D5E6E5; --l2:#A9CDCB; --l3:#78AEAC; --l4:#4A8D8F; --l5:#2E6B70;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme: dark;
+    --bg:#141B1D; --surface:#1D2729; --ink:#E4ECEB; --muted:#9BAAA9; --line:#33413F;
+    --accent:#7FC0BF; --accent-ink:#0F1A1B; --warn:#F2C08A; --warn-bg:#3A2A18;
+    --l1:#25393A; --l2:#2F5254; --l3:#3E6E70; --l4:#5A9293; --l5:#7FC0BF;
+  }
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:17px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding:28px 18px 120px}
+h1{font-size:2rem;line-height:1.15;margin:0 0 10px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:0 0 4px;font-weight:600}
+p{margin:0 0 12px}
+.lead{color:var(--muted);max-width:60ch}
+.status{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted);margin:14px 0 22px;min-height:1.5em}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--l3);flex:none}
+.status.err .dot{background:var(--warn)}
+.status.err{color:var(--warn)}
+details.help{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 16px;margin-bottom:22px}
+details.help summary{cursor:pointer;padding:14px 0;font-weight:600;list-style:none}
+details.help summary::-webkit-details-marker{display:none}
+details.help summary::before{content:"+";display:inline-block;width:1.2em;color:var(--accent)}
+details.help[open] summary::before{content:"−"}
+details.help ol{margin:0 0 16px;padding-left:1.3em}
+details.help li{margin-bottom:6px}
+details.help p{max-width:62ch}
+details.cheat{border-color:var(--l2)}
+details.cheat dl{margin:0 0 12px}
+details.cheat dt{font-weight:600;margin-top:10px}
+details.cheat dd{margin:2px 0 0;padding-left:12px;border-left:3px solid var(--l2)}
+details.cheat .after{color:var(--muted);font-size:.93rem;margin-bottom:16px}
+details.help h3{font-size:1rem;font-weight:600;margin:14px 0 6px}
+details.help ul{margin:0 0 10px;padding-left:1.2em}
+details.help ol ul{margin-top:6px}
+.hint{font-size:.9rem;color:var(--muted);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.chips span{background:var(--l1);color:var(--ink);border-radius:999px;padding:4px 11px;font-size:.92rem}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;margin:0 -2px 10px;scrollbar-width:thin}
+.tab{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  border-radius:999px;padding:9px 16px;font:inherit;font-size:.95rem;cursor:pointer;display:flex;gap:8px;align-items:center}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tab .count{font-size:.8rem;opacity:.8}
+.own-name{display:flex;gap:10px;align-items:center;margin:4px 0 16px}
+.own-name label{font-weight:500;white-space:nowrap}
+input[type=text],textarea{width:100%;font:inherit;font-size:1rem;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+textarea{resize:vertical;min-height:2.8em;line-height:1.45}
+input:focus-visible,textarea:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--l3);outline-offset:2px}
+.level{display:grid;grid-template-columns:56px 1fr;gap:14px;background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.ladder{display:flex;flex-direction:column-reverse;gap:3px;align-items:stretch;padding-top:4px}
+.ladder span{height:9px;border-radius:2px;background:var(--line)}
+.num{font-size:1.9rem;font-weight:700;line-height:1;text-align:center;margin-bottom:10px}
+.lv-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:10px}
+.lv-name{font-weight:600}
+.field{margin-bottom:10px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:4px}
+.done-mark{font-size:.82rem;color:var(--accent);margin-left:auto}
+.actions{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5}
+.actions .row{max-width:760px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-size:.95rem;border-radius:8px;padding:10px 14px;cursor:pointer;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.btn.ghost{border-color:transparent;color:var(--muted);margin-left:auto}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:26px;font-size:.93rem;color:var(--muted)}
+.note strong{color:var(--ink);font-weight:600}
+.note.warn{background:var(--warn-bg);border-color:transparent;color:var(--warn)}
+.hidden{display:none}
+.back{display:inline-block;font-size:.92rem;color:var(--accent);text-decoration:none;margin-bottom:16px}
+.back:hover{text-decoration:underline}
+#print{display:none}
+@media (max-width:480px){
+  .level{grid-template-columns:40px 1fr;gap:10px;padding:14px}
+  .num{font-size:1.5rem}
+  h1{font-size:1.7rem}
+  .btn{flex:1 1 auto}
+  .btn.ghost{flex:0 0 100%;margin-left:0}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media print{
+  :root{padding:0}
+  body{background:#fff;color:#000;font-size:11pt}
+  .wrap,.actions{display:none!important}
+  #print{display:block}
+  #print h1{font-size:18pt;margin-bottom:4pt}
+  #print h2{font-size:13pt;margin:16pt 0 6pt}
+  #print table{width:100%;border-collapse:collapse;page-break-inside:auto}
+  #print tr{page-break-inside:avoid}
+  #print th,#print td{border:1px solid #888;padding:5pt;vertical-align:top;text-align:left}
+  #print th{background:#eee}
+  #print .meta{color:#444;font-size:10pt}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">← На главную</a>
+  <h1>Моя шкала эмоций</h1>
+  <p class="lead">Здесь вы собираете свои примеры для всех уровней эмоции, от 1 до 5. Потом, когда заполняете дневник, сравниваете то, что чувствуете сейчас, с этими примерами.</p>
+
+  <div class="status" id="status" role="status" aria-live="polite"><span class="dot"></span><span id="statusText">Изменений пока нет</span></div>
+
+  <div class="note warn hidden" id="storageWarn">Этот браузер не даёт сохранять данные (например, включён режим инкогнито). Записи пропадут после закрытия вкладки. Перед закрытием нажмите «Сохранить копию файлом».</div>
+
+  <details class="help">
+    <summary>Как заполнять</summary>
+    <ol>
+      <li>Выберите эмоцию вверху. Заполнять все сразу не нужно, можно по одной в день.</li>
+      <li>Начните с уровня 5: самый сильный случай этой эмоции, который вы помните. Потом уровень 1: эмоция была, но почти не мешала.</li>
+      <li>Затем уровень 3, ровно посередине. Потом 2 и 4.</li>
+      <li>Событие опишите коротко: где, когда, что произошло.</li>
+      <li>Если не помните, что было в теле, оставьте поле пустым.</li>
+      <li>Если трудно выбрать уровень, сравните два события: «Здесь сильнее или слабее, чем там?»</li>
+    </ol>
+    <p>Тело подсказывает силу эмоции. Чем больше сигналов и чем дольше они держатся, тем выше уровень. У всех эмоций есть подсказка «Как … может ощущаться в теле»: откройте её и сверьтесь.</p>
+  </details>
+
+  <details class="help">
+    <summary>Почему эмоции чувствуются в теле</summary>
+    <p>Эмоциями управляет вегетативная нервная система. Она работает сама, без нашего решения, и в ней две части.</p>
+    <p><strong>Система действия</strong> (симпатическая) готовит тело к тому, чтобы защищаться или убегать: сердце бьётся чаще, дыхание ускоряется, мышцы напрягаются, выступает пот, пищеварение замедляется. Она сильнее всего работает в злости и тревоге.</p>
+    <p><strong>Система замедления</strong> (парасимпатическая) успокаивает и восстанавливает тело, а при сильной нагрузке может «выключать» его: появляются тяжесть, усталость, слёзы, ком в горле, желание лечь или замереть. Она заметна в грусти, обиде, стыде и после сильной эмоции.</p>
+    <p>Сигналы тела иногда замечаются позже, чем эмоция началась. Это часто бывает, и шкала помогает это тренировать: чем чаще вы сверяетесь, тем раньше начинаете замечать.</p>
+  </details>
+
+  <details class="help">
+    <summary>Как наблюдать за ощущением в теле</summary>
+    <p>Упражнение тренирует замечать сигналы тела. Его можно делать во время эмоции или сразу после. Занимает 3–5 минут.</p>
+    <ol>
+      <li>Смотрите в одну точку или закройте глаза. Проведите вниманием по телу сверху вниз: голова, лицо, шея, плечи, грудь, живот, руки, ноги.</li>
+      <li>Выберите место, где ощущение сильнее всего.</li>
+      <li>Ответьте на вопросы, можно письменно:
+        <ul>
+          <li>Где именно оно находится?</li>
+          <li>Какого оно размера: с монету, с ладонь, больше?</li>
+          <li>Оно тёплое, горячее или холодное?</li>
+          <li>Тяжёлое или лёгкое?</li>
+          <li>Давит, сжимает, покалывает, пульсирует или вибрирует?</li>
+          <li>Стоит на месте или перемещается?</li>
+          <li>Есть ли у него чёткая граница?</li>
+        </ul>
+      </li>
+      <li>Сделайте несколько медленных вдохов и выдохов и продолжайте наблюдать. Ничего не меняйте специально.</li>
+      <li>Заметьте, через сколько минут ощущение начало меняться или ослабевать.</li>
+    </ol>
+    <p>Убирать ощущение не нужно. Ваша задача в том, чтобы заметить его и описать как можно точнее.</p>
+  </details>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div id="panel"></div>
+
+  <div class="note">
+    <p><strong>Где хранятся ваши записи.</strong> Только в этом браузере на этом устройстве. Специалист и сайт их не видят и не получают. Записи сохраняются сами после любого изменения.</p>
+    <p><strong>Когда записи могут пропасть:</strong> если очистить историю браузера, открыть страницу в другом браузере или на другом устройстве. Браузер Safari на iPhone может удалить записи, если не открывать страницу больше недели.</p>
+    <p style="margin:0"><strong>Чтобы не потерять:</strong> время от времени нажимайте «Сохранить копию файлом». Файл можно открыть здесь же кнопкой «Загрузить копию», в том числе на другом устройстве.</p>
+  </div>
+</div>
+
+<div class="actions">
+  <div class="row">
+    <button class="btn primary" id="pdfBtn" type="button">Скачать PDF</button>
+    <button class="btn" id="saveBtn" type="button">Сохранить копию файлом</button>
+    <button class="btn" id="loadBtn" type="button">Загрузить копию</button>
+    <button class="btn ghost" id="clearBtn" type="button">Очистить всё</button>
+    <input type="file" id="fileIn" accept=".json,application/json" class="hidden">
+  </div>
+</div>
+
+<div id="print"></div>
+
+<script>
+(function(){
+  const KEY = "emotion-scale-v1";
+  const EMOTIONS = [
+    {id:"anger", title:"Злость", names:["Лёгкое раздражение","Раздражение","Злость","Сильная злость","Ярость"],
+     cheat:{
+       how:"Злость включает систему, которая готовит тело к действию: защититься, оттолкнуть, ответить. Кровь приливает к мышцам рук и плеч, сердце и дыхание ускоряются.",
+       levels:[
+         ["1–2","Сдвинуты брови, напряжена челюсть, тяжёлый выдох, нетерпение, хочется поторопить или прервать."],
+         ["3","Жар в лице и шее, сердце бьётся чаще, сжимаются кулаки, напрягаются плечи и руки, голос становится громче или резче."],
+         ["4–5","Сильное сердцебиение, дрожь в руках, лицо краснеет или бледнеет, внимание сужается до одного человека или ситуации, трудно думать о другом, хочется кричать, толкнуть, ударить."]
+       ],
+       after:"После сильной злости часто бывает усталость, дрожь, головная боль, мысли о ситуации возвращаются ещё несколько часов."
+     }},
+    {id:"anxiety", title:"Тревога", names:["Лёгкое беспокойство","Волнение","Тревога","Сильная тревога, страх","Паника"],
+     cheat:{
+       how:"Тревога включает ту же систему действия, но тело готовится убежать или спрятаться. Пищеварение замедляется, руки и ноги холодеют, мышцы напряжены. Иногда тело наоборот замирает.",
+       levels:[
+         ["1–2","Лёгкое напряжение, трудно сидеть спокойно, мысли возвращаются к одному и тому же, хочется проверить или уточнить."],
+         ["3","Сердце бьётся чаще, дыхание поверхностное, сжимается живот, потеют ладони, холодные руки, напряжены шея и плечи, хочется в туалет."],
+         ["4–5","Сердце колотится, не хватает воздуха, кружится голова, дрожь, тошнота, покалывание или онемение в пальцах, ощущение, что всё вокруг не по-настоящему, хочется немедленно уйти или невозможно пошевелиться."]
+       ],
+       after:"Похожие сигналы дают шум, яркий свет, толпа, голод, кофе и недосып. Если сигналы есть, а тревожных мыслей нет, проверьте сначала это."
+     }},
+    {id:"shame", title:"Неловкость и стыд", names:["Лёгкая неловкость","Смущение","Стыд","Сильный стыд","Очень сильный стыд, хочется немедленно уйти"],
+     cheat:{
+       how:"В стыде работают обе системы. Сначала короткое включение: кровь приливает к лицу. Затем замедление: тело сжимается, взгляд опускается, хочется стать незаметным.",
+       levels:[
+         ["1–2","Тепло в лице, хочется отвести глаза, движения становятся неловкими, появляется желание поправить одежду или волосы."],
+         ["3","Краснеют лицо, шея или уши, взгляд вниз, голос тише, трудно подобрать слова, плечи опускаются или поднимаются к ушам."],
+         ["4–5","Сильный жар в лице, тело сжимается, хочется исчезнуть или немедленно уйти, мысли путаются, можно замереть и не суметь ответить, иногда подташнивает."]
+       ],
+       after:"После стыда ситуация часто прокручивается в голове много раз, иногда в тот же вечер и на следующий день."
+     }},
+    {id:"hurt", title:"Обида", names:["Лёгкое огорчение","Огорчение","Обида","Сильная обида","Очень сильная обида"],
+     cheat:{
+       how:"Обида соединяет грусть и злость. Грусть включает систему замедления: тяжесть, слёзы, усталость. Злость добавляет напряжение в челюсти и руках.",
+       levels:[
+         ["1–2","Лёгкая тяжесть в груди, хочется отстраниться, меньше говорить с человеком."],
+         ["3","Ком в горле, сдавленность в груди, напряжена челюсть, хочется молчать или отвернуться, глаза влажнеют."],
+         ["4–5","Сильный ком в горле, слёзы, тяжесть во всём теле, нет сил, не хочется ни с кем говорить, могут быть вспышки злости на человека."]
+       ],
+       after:"Обида может держаться долго: ощущение в груди возвращается, когда вспоминаете ситуацию или видите этого человека."
+     }},
+    {id:"sadness", title:"Печаль", names:["Лёгкая грусть","Грусть","Печаль","Сильная печаль","Горе, отчаяние"],
+     cheat:{
+       how:"Печаль включает систему замедления: тело тратит меньше энергии, движения становятся медленнее, хочется покоя и поддержки.",
+       levels:[
+         ["1–2","Немного меньше энергии, хочется тишины, тяжёлые вздохи."],
+         ["3","Тяжесть в груди, ком в горле, глаза влажнеют, движения медленнее, голос тише, хочется лечь."],
+         ["4–5","Слёзы, тяжесть во всём теле, нет сил вставать и что-то делать, трудно глотать, пропадает аппетит, нарушается сон."]
+       ],
+       after:"Если печаль и отсутствие сил держатся больше двух недель, расскажите об этом специалисту."
+     }},
+    {id:"disgust", title:"Отвращение", names:["Лёгкая неприязнь","Неприязнь","Отвращение","Сильное отвращение","Омерзение"],
+     cheat:{
+       how:"Отвращение заставляет тело отстраниться и избавиться от того, что может навредить: испорченной еды, грязи, неприятного прикосновения или поступка.",
+       levels:[
+         ["1–2","Морщится нос, поднимается верхняя губа, хочется отодвинуться."],
+         ["3","Подташнивает, напрягается горло, хочется отвернуться, вытереть руки, отойти."],
+         ["4–5","Сильная тошнота или рвотный позыв, хочется немедленно уйти, вымыться, сменить одежду, трудно думать о другом."]
+       ],
+       after:"Отвращение часто вызывают запахи, текстуры и прикосновения. Если вы чувствительны к ним, отвращение может появляться чаще, чем у других людей. Так устроено ваше восприятие."
+     }},
+    {id:"joy", title:"Радость", names:["Удовольствие","Радость","Сильная радость","Восторг","Счастье"],
+     cheat:{
+       how:"В радости система действия включается умеренно и вместе с расслаблением: появляется энергия, но мышцы не сжаты, как в злости или тревоге.",
+       levels:[
+         ["1–2","Лёгкость в теле, плечи опускаются, дышится свободнее, приятное тепло, уголки губ поднимаются."],
+         ["3","Улыбка появляется сама, больше энергии, хочется двигаться, говорить, рассказать кому-то."],
+         ["4–5","Смех, тепло в груди, сердце бьётся чаще, трудно усидеть на месте, хочется ходить, прыгать, говорить быстро. Счастье может ощущаться и спокойно: тепло и расслабление во всём теле."]
+       ],
+       after:"После сильной радости тоже бывает усталость, особенно если вокруг было шумно и много людей. Радостное событие может быть и нагрузкой, это нормально."
+     }},
+    {id:"interest", title:"Интерес и увлечённость", names:["Лёгкое любопытство","Интерес","Увлечённость","Сильная увлечённость","Полное погружение"],
+     cheat:{
+       how:"Интерес мягко включает систему действия и собирает всё внимание вокруг одного занятия. Сигналы тела в это время становятся тише.",
+       levels:[
+         ["1–2","Хочется посмотреть или узнать подробнее, взгляд задерживается, тело немного подаётся вперёд."],
+         ["3","Внимание сосредоточено, мелочи вокруг не отвлекают, хочется продолжать, может пропасть ощущение голода."],
+         ["4–5","Время идёт незаметно, не замечаю голода, жажды, усталости, желания в туалет, трудно оторваться и переключиться, раздражает, если прерывают."]
+       ],
+       after:"После долгого погружения сразу появляются голод, усталость, боль в спине или глазах: тело всё это время подавало сигналы, но они не замечались. Помогают напоминания на телефоне."
+     }},
+    {id:"own", title:"Своя эмоция", names:["","","","",""], cheat:null}
+  ];
+  const INFO = {
+    anger:{func:"Сообщает, что нарушены ваши границы, вам мешают или с вами обошлись несправедливо. Даёт энергию, чтобы защититься или исправить ситуацию.",
+      words:["досада","раздражение","недовольство","возмущение","негодование","злость","гнев","ярость","бешенство"],
+      triggers:["Вам мешают сделать то, что важно","Ситуация пошла не так, как вы планировали","С вами или с близким человеком обошлись несправедливо или грубо","Вас перебивают, не учитывают ваше мнение","Физическая боль или сильная усталость"],
+      urges:["Ответить резко, повысить голос","Спорить, доказывать свою правоту","Ударить, толкнуть, бросить предмет","Хлопнуть дверью, уйти","Долго прокручивать ситуацию в голове"]},
+    anxiety:{func:"Предупреждает о возможной опасности и готовит тело к тому, чтобы избежать её или подготовиться.",
+      words:["беспокойство","волнение","нервозность","опасение","тревога","страх","испуг","ужас","паника"],
+      triggers:["Новая или незнакомая ситуация","Нужно что-то сделать при других людях","Неизвестно, что будет дальше","Возможная критика или отказ","Шум, толпа, яркий свет"],
+      urges:["Уйти, отказаться, отменить","Проверить и перепроверить","Заранее продумать, что сказать","Спрятаться, стать незаметным","Замереть, не двигаться"]},
+    shame:{func:"Сообщает, что ваше поведение может не понравиться людям, которые для вас важны. Помогает сохранять отношения и место в группе.",
+      words:["неловкость","смущение","замешательство","стеснение","стыд","унижение"],
+      triggers:["Кажется, что на вас смотрят или оценивают","Вы ошиблись при других людях","Над вами посмеялись","Вас критикуют, когда вы ждали одобрения","Вы заметили, что выглядите или ведёте себя не так, как другие"],
+      urges:["Отвести взгляд, опустить голову","Спрятаться, уйти","Говорить тише или замолчать","Скрыть то, что кажется неправильным","Много раз извиняться"]},
+    hurt:{func:"Показывает, что ожидания от близкого человека не совпали с тем, что произошло. Помогает понять, что для вас важно в отношениях.",
+      words:["огорчение","разочарование","досада","обида","горечь"],
+      triggers:["Человек не сделал то, что вы ожидали","Вас не позвали или про вас забыли","Ваши старания не заметили","Близкий человек сказал что-то неприятное"],
+      urges:["Замолчать, перестать отвечать","Отстраниться от человека","Высказать упрёк","Ждать, что человек сам догадается"]},
+    sadness:{func:"Показывает, что вы потеряли что-то важное. Сообщает окружающим, что вам нужна поддержка, и даёт телу время восстановиться.",
+      words:["грусть","огорчение","разочарование","тоска","одиночество","печаль","уныние","горе","отчаяние"],
+      triggers:["Потеря человека, отношений, вещи или возможности","Что-то важное не получилось","Расставание или разлука","Вам отказали или не приняли в группу"],
+      urges:["Лечь, ничего не делать","Остаться одному","Плакать","Искать поддержку у близких","Отказаться от приятных дел"]},
+    disgust:{func:"Защищает тело от того, что может навредить: отравления, заразы. Также создаёт дистанцию с людьми и поступками, которые противоречат вашим ценностям.",
+      words:["неприязнь","брезгливость","антипатия","отвращение","презрение","омерзение"],
+      triggers:["Неприятный запах, вкус или текстура","Грязь, испорченные продукты","Прикосновение, которое вам неприятно","Поступок, который противоречит вашим ценностям: грубость, лицемерие, унижение"],
+      urges:["Отвернуться, закрыть глаза","Отойти, оттолкнуть","Вымыть руки, принять душ","Отказаться от еды","Сказать что-то презрительное"]},
+    joy:{func:"Сообщает, что происходит что-то приятное и важное для вас. Побуждает повторять то, что приносит пользу, и сближаться с людьми.",
+      words:["удовольствие","облегчение","веселье","радость","гордость","восторг","счастье"],
+      triggers:["Получилось то, над чем вы работали","Всё сложилось лучше, чем вы ожидали","Вас похвалили или признали","Время с людьми, с которыми вам хорошо","Любимое занятие"],
+      urges:["Улыбаться, смеяться","Рассказать кому-то","Продолжать то, что приносит радость","Обнять близкого человека","Двигаться, прыгать"]},
+    interest:{func:"Направляет внимание на новое и важное для вас. Помогает учиться и разбираться в том, что вам нравится.",
+      words:["любопытство","интерес","увлечённость","энтузиазм","азарт","погружение"],
+      triggers:["Новая информация по любимой теме","Задача, которую хочется решить","Новое занятие или место, которое привлекает"],
+      urges:["Узнать больше, искать информацию","Продолжать, не отвлекаться","Рассказать о теме другим","Попробовать сделать самому"]}
+  };
+  const FIELDS = [
+    {k:"event", label:"Событие: где, когда, что произошло"},
+    {k:"body", label:"Что было в теле"},
+    {k:"act", label:"Что хотелось сделать / что сделал(а)"}
+  ];
+
+  function emptyData(){
+    const d = {version:1, ownName:"", active:"anger", items:{}};
+    EMOTIONS.forEach(e => { d.items[e.id] = [1,2,3,4,5].map(() => ({event:"",body:"",act:""})); });
+    return d;
+  }
+
+  let storageOK = true;
+  try { localStorage.setItem("__t","1"); localStorage.removeItem("__t"); } catch(e){ storageOK = false; }
+  if (!storageOK) document.getElementById("storageWarn").classList.remove("hidden");
+  if (storageOK && navigator.storage && navigator.storage.persist) { navigator.storage.persist().catch(()=>{}); }
+
+  let data = emptyData();
+  if (storageOK){
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw){ data = merge(JSON.parse(raw)); }
+    } catch(e){}
+  }
+
+  function merge(src){
+    const d = emptyData();
+    if (!src || typeof src !== "object") return d;
+    if (typeof src.ownName === "string") d.ownName = src.ownName;
+    if (EMOTIONS.some(e => e.id === src.active)) d.active = src.active;
+    if (src.items) EMOTIONS.forEach(e => {
+      const arr = src.items[e.id];
+      if (Array.isArray(arr)) arr.slice(0,5).forEach((lv,i) => {
+        FIELDS.forEach(f => { if (lv && typeof lv[f.k] === "string") d.items[e.id][i][f.k] = lv[f.k]; });
+      });
+    });
+    return d;
+  }
+
+  const statusEl = document.getElementById("status");
+  const statusText = document.getElementById("statusText");
+  let timer = null;
+  function setStatus(msg, err){ statusText.textContent = msg; statusEl.classList.toggle("err", !!err); }
+  function hasAny(){ return EMOTIONS.some(e => data.items[e.id].some(lv => lv.event||lv.body||lv.act)) || data.ownName; }
+  if (hasAny()) setStatus(storageOK ? "Записи загружены из этого браузера" : "Записи загружены из файла");
+
+  function save(){
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (!storageOK){ setStatus("Не сохраняется в браузере. Сохраните копию файлом", true); return; }
+      try {
+        localStorage.setItem(KEY, JSON.stringify(data));
+        const t = new Date();
+        setStatus("Сохранено в этом браузере в " + String(t.getHours()).padStart(2,"0") + ":" + String(t.getMinutes()).padStart(2,"0"));
+      } catch(e){ setStatus("Не удалось сохранить. Сохраните копию файлом", true); }
+    }, 300);
+  }
+
+  function filled(id){ return data.items[id].filter(lv => lv.event.trim()).length; }
+  function emoTitle(e){ return e.id === "own" && data.ownName.trim() ? data.ownName.trim() : e.title; }
+
+  const tabsEl = document.getElementById("tabs");
+  const panel = document.getElementById("panel");
+
+  function renderTabs(){
+    tabsEl.innerHTML = "";
+    EMOTIONS.forEach(e => {
+      const b = document.createElement("button");
+      b.className = "tab"; b.type = "button"; b.setAttribute("role","tab");
+      b.setAttribute("aria-selected", String(e.id === data.active));
+      b.innerHTML = "<span></span><span class='count'></span>";
+      b.children[0].textContent = emoTitle(e);
+      b.children[1].textContent = filled(e.id) + " из 5";
+      b.addEventListener("click", () => { data.active = e.id; save(); renderTabs(); renderPanel(); });
+      tabsEl.appendChild(b);
+    });
+  }
+
+  function autoGrow(t){ t.style.height = "auto"; t.style.height = (t.scrollHeight + 2) + "px"; }
+
+  function renderPanel(){
+    const e = EMOTIONS.find(x => x.id === data.active);
+    panel.innerHTML = "";
+    const ch = document.createElement("details");
+    ch.className = "help cheat";
+    if (e.cheat){
+      let h = "<summary>Как " + (e.id === "shame" || e.id === "interest" ? esc(e.title.toLowerCase()) + " могут" : esc(e.title.toLowerCase()) + " может") + " ощущаться в теле</summary><p>" + esc(e.cheat.how) + "</p><dl>";
+      e.cheat.levels.forEach(l => { h += "<dt>Уровень " + l[0] + "</dt><dd>" + esc(l[1]) + "</dd>"; });
+      h += "</dl><p class='after'>" + esc(e.cheat.after) + "</p>";
+      ch.innerHTML = h;
+    } else {
+      ch.innerHTML = "<summary>Где искать эмоцию в теле</summary><dl>" +
+        "<dt>Сердце и дыхание</dt><dd>Быстрее или медленнее, сильнее, трудно вдохнуть глубоко.</dd>" +
+        "<dt>Мышцы</dt><dd>Напряжены челюсть, плечи, руки, живот, или наоборот слабость и тяжесть.</dd>" +
+        "<dt>Температура и кожа</dt><dd>Жар в лице, холодные руки, пот, мурашки.</dd>" +
+        "<dt>Живот</dt><dd>Сжимается, тошнит, пропадает или появляется аппетит.</dd>" +
+        "<dt>Горло, глаза, голос</dt><dd>Ком в горле, слёзы, голос громче, тише или дрожит.</dd>" +
+        "<dt>Движения</dt><dd>Хочется двигаться, ходить, или трудно пошевелиться.</dd>" +
+        "<dt>Внимание</dt><dd>Думаю только о ситуации, звуки и свет раздражают сильнее обычного.</dd></dl>";
+    }
+    panel.appendChild(ch);
+    const inf = INFO[e.id];
+    if (inf){
+      const d = document.createElement("details");
+      d.className = "help cheat";
+      const ACC = {anger:"злость", anxiety:"тревогу", shame:"неловкость и стыд", hurt:"обиду", sadness:"печаль", disgust:"отвращение", joy:"радость", interest:"интерес и увлечённость"};
+      let h = "<summary>Подробнее про " + esc(ACC[e.id] || e.title.toLowerCase()) + "</summary>";
+      h += "<h3>Зачем нужна эта эмоция</h3><p>" + esc(inf.func) + "</p>";
+      h += "<h3>Слова для оттенков</h3><p class='hint'>От слабого к сильному. Можно использовать в дневнике вместо общего названия.</p><div class='chips'>" + inf.words.map(w => "<span>" + esc(w) + "</span>").join("") + "</div>";
+      h += "<h3>Когда часто появляется</h3><ul>" + inf.triggers.map(t => "<li>" + esc(t) + "</li>").join("") + "</ul>";
+      h += "<h3>Что обычно хочется сделать</h3><ul>" + inf.urges.map(t => "<li>" + esc(t) + "</li>").join("") + "</ul>";
+      h += "<p class='after'>Хотеть что-то сделать и сделать это на самом деле не одно и то же. Желание появляется само, а действие вы выбираете. В таблице записывайте и то, и другое.</p>";
+      d.innerHTML = h;
+      panel.appendChild(d);
+    }
+    if (e.id === "own"){
+      const w = document.createElement("div"); w.className = "own-name";
+      w.innerHTML = "<label for='ownName'>Название эмоции</label><input type='text' id='ownName' placeholder='например, грусть или зависть'>";
+      const inp = w.querySelector("input"); inp.value = data.ownName;
+      inp.addEventListener("input", () => { data.ownName = inp.value; save(); renderTabs(); });
+      panel.appendChild(w);
+    }
+    for (let i = 4; i >= 0; i--){
+      const lv = data.items[e.id][i];
+      const card = document.createElement("section");
+      card.className = "level";
+      const side = document.createElement("div");
+      side.innerHTML = "<div class='num'>" + (i+1) + "</div><div class='ladder' aria-hidden='true'></div>";
+      const lad = side.querySelector(".ladder");
+      for (let s = 0; s < 5; s++){
+        const sp = document.createElement("span");
+        if (s <= i) sp.style.background = "var(--l" + (s+1) + ")";
+        lad.appendChild(sp);
+      }
+      const body = document.createElement("div");
+      const head = document.createElement("div"); head.className = "lv-head";
+      const nm = document.createElement("span"); nm.className = "lv-name";
+      nm.textContent = e.names[i] || ("Уровень " + (i+1));
+      const dm = document.createElement("span"); dm.className = "done-mark";
+      dm.textContent = lv.event.trim() ? "заполнено" : "";
+      head.append(nm, dm); body.appendChild(head);
+      FIELDS.forEach(f => {
+        const fid = e.id + "-" + i + "-" + f.k;
+        const wrap = document.createElement("div"); wrap.className = "field";
+        const lab = document.createElement("label"); lab.htmlFor = fid; lab.textContent = f.label;
+        const ta = document.createElement("textarea"); ta.id = fid; ta.rows = f.k === "event" ? 2 : 1;
+        ta.value = lv[f.k];
+        ta.addEventListener("input", () => {
+          lv[f.k] = ta.value; autoGrow(ta); save();
+          if (f.k === "event"){ dm.textContent = ta.value.trim() ? "заполнено" : ""; renderTabs(); }
+        });
+        wrap.append(lab, ta); body.appendChild(wrap);
+        requestAnimationFrame(() => autoGrow(ta));
+      });
+      card.append(side, body);
+      panel.appendChild(card);
+    }
+  }
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+  function buildPrint(){
+    const t = new Date();
+    let h = "<h1>Моя шкала эмоций</h1><p class='meta'>Дата: " + t.toLocaleDateString("ru-RU") + "</p>";
+    EMOTIONS.forEach(e => {
+      const items = data.items[e.id];
+      if (!items.some(lv => lv.event||lv.body||lv.act)) return;
+      h += "<h2>" + esc(emoTitle(e)) + "</h2><table><tr><th>Уровень</th><th>Название</th><th>Событие</th><th>Что было в теле</th><th>Что хотелось сделать / что сделал(а)</th></tr>";
+      for (let i = 4; i >= 0; i--){
+        const lv = items[i];
+        h += "<tr><td>" + (i+1) + "</td><td>" + esc(e.names[i]) + "</td><td>" + esc(lv.event) + "</td><td>" + esc(lv.body) + "</td><td>" + esc(lv.act) + "</td></tr>";
+      }
+      h += "</table>";
+    });
+    if (!hasAny()) h += "<p>Шкала пока не заполнена.</p>";
+    document.getElementById("print").innerHTML = h;
+  }
+
+  document.getElementById("pdfBtn").addEventListener("click", () => {
+    buildPrint();
+    alert("Откроется окно печати. Выберите «Сохранить как PDF». На iPhone: «Печать», затем значок «Поделиться» и «Сохранить в Файлы».");
+    window.print();
+  });
+
+  document.getElementById("saveBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    const t = new Date();
+    a.href = URL.createObjectURL(blob);
+    a.download = "shkala-emociy-" + t.toISOString().slice(0,10) + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    setStatus("Копия сохранена файлом");
+  });
+
+  const fileIn = document.getElementById("fileIn");
+  document.getElementById("loadBtn").addEventListener("click", () => fileIn.click());
+  fileIn.addEventListener("change", () => {
+    const f = fileIn.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const parsed = JSON.parse(r.result);
+        if (!parsed || !parsed.items) throw new Error("bad");
+        if (hasAny() && !confirm("Записи на этой странице заменятся записями из файла. Продолжить?")) return;
+        data = merge(parsed); save(); renderTabs(); renderPanel();
+        setStatus("Копия загружена");
+      } catch(e){ setStatus("Этот файл не подходит. Выберите файл, сохранённый кнопкой «Сохранить копию файлом»", true); }
+      fileIn.value = "";
+    };
+    r.readAsText(f);
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    if (!confirm("Удалить все записи с этого устройства? Если копии файлом нет, восстановить их будет нельзя.")) return;
+    data = emptyData();
+    try { localStorage.removeItem(KEY); } catch(e){}
+    renderTabs(); renderPanel(); setStatus("Все записи удалены");
+  });
+
+  renderTabs(); renderPanel();
+})();
+</script>
+</body>
+</html>
